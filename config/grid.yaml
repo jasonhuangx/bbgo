@@ -3,6 +3,8 @@ sessions:
   binance:
     exchange: binance
     envVarPrefix: binance
+    makerFeeRate: 0%
+    takerFeeRate: 0%
 
   #max:
   #  exchange: max
@@ -17,7 +19,7 @@ riskControls:
       orderExecutor:
         # symbol-routed order executor
         bySymbol:
-          BTCUSDT:
+          USDCUSDT:
             # basic risk control order executor
             basic:
               minQuoteBalance: 100.0
@@ -31,31 +33,46 @@ backtest:
   # for testing max draw down (MDD) at 03-12
   # see here for more details
   # https://www.investopedia.com/terms/m/maximum-drawdown-mdd.asp
-  startTime: "2022-05-09"
-  endTime: "2022-05-20"
+  startTime: "2024-08-19"
+  endTime: "2024-08-20"
   symbols:
-    - BTCUSDT
+    - USDCUSDT
   sessions: [binance]
   accounts:
     binance:
+      makerFeeRate: 0.0%
+      takerFeeRate: 0.0%
       balances:
-        BTC: 0.0
+        USDC: 0.0
         USDT: 10000.0
 
 exchangeStrategies:
 
 - on: binance
   grid:
-    symbol: BTCUSDT
-    quantity: 0.001
+    symbol: USDCUSDT
+    quantity: 500
     # scaleQuantity:
     #   byPrice:
     #     exp:
     #       domain: [20_000, 30_000]
     #       range: [0.2, 0.001]
     gridNumber: 20
-    profitSpread: 1000.0  # The profit price spread that you want to add to your sell order when your buy order is executed
-    upperPrice: 30_000.0
-    lowerPrice: 28_000.0
+    profitSpread: 0.0001
+    upperPrice: 1.001
+    lowerPrice: 0.999
     # long: true  # The sell order is submitted in the same order amount as the filled corresponding buy order, rather than the same quantity.
+
+sync:
+  depositHistory: true
+  marginHistory: true
+  sessions:
+  - binance
+  symbols:
+  - binance:USDCUSDT
+  since: 2023-04-03
+  userDataStream:
+    filledOrders: true
+    trades: true
+  withdrawHistory: true
 
