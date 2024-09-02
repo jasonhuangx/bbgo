@@ -16,7 +16,7 @@ import (
 	"github.com/c9s/bbgo/pkg/util"
 )
 
-const ID = "grid"
+const ID = "grid3"
 
 var log = logrus.WithField("strategy", ID)
 
@@ -540,6 +540,12 @@ func (s *Strategy) InstanceID() string {
 }
 
 func (s *Strategy) Run(ctx context.Context, orderExecutor bbgo.OrderExecutor, session *bbgo.ExchangeSession) error {
+
+	err := s.RunSingleTask(ctx,orderExecutor,session)
+	return err
+}
+
+func (s *Strategy) RunSingleTask(ctx context.Context, orderExecutor bbgo.OrderExecutor, session *bbgo.ExchangeSession) error {
 	// do some basic validation
 	if s.GridNum == 0 {
 		s.GridNum = 10
