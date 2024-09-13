@@ -541,8 +541,10 @@ func (s *Strategy) InstanceID() string {
 
 func (s *Strategy) Run(ctx context.Context, orderExecutor bbgo.OrderExecutor, session *bbgo.ExchangeSession) error {
 
-	err := s.RunSingleTask(ctx,orderExecutor,session)
-	return err
+	fmt.Sprintf("---------grid3 ------------")
+	return nil
+	// err := s.RunSingleTask(ctx,orderExecutor,session)
+	// return err
 }
 
 func (s *Strategy) RunSingleTask(ctx context.Context, orderExecutor bbgo.OrderExecutor, session *bbgo.ExchangeSession) error {
