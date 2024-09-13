@@ -68,8 +68,8 @@ var BacktestCmd = &cobra.Command{
 			return err
 		}
 		fmt.Println("---------BacktestCmd ------------")
-		fmt.Printf("args = [%s]\n", configFile)		
-		fmt.Printf("configFile  = [%s] \n", configFile)		
+		fmt.Printf("args = [%s]\n", args)		
+		fmt.Printf("configFile  = [%s] \n\n", configFile)		
 		if len(configFile) == 0 {
 			return errors.New("--config option is required")
 		}
