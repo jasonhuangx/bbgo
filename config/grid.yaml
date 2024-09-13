@@ -3,8 +3,6 @@ sessions:
   binance:
     exchange: binance
     envVarPrefix: binance
-    makerFeeRate: 0%
-    takerFeeRate: 0%
 
   #max:
   #  exchange: max
@@ -33,8 +31,8 @@ backtest:
   # for testing max draw down (MDD) at 03-12
   # see here for more details
   # https://www.investopedia.com/terms/m/maximum-drawdown-mdd.asp
-  startTime: "2024-08-19"
-  endTime: "2024-08-20"
+  startTime: "2024-01-01"
+  endTime: "2024-08-31"
   symbols:
     - USDCUSDT
   sessions: [binance]
@@ -51,13 +49,13 @@ exchangeStrategies:
 - on: binance
   grid:
     symbol: USDCUSDT
-    quantity: 500
+    quantity: 1000
     # scaleQuantity:
     #   byPrice:
     #     exp:
     #       domain: [20_000, 30_000]
     #       range: [0.2, 0.001]
-    gridNumber: 20
+    gridNumber: 10
     profitSpread: 0.0001
     upperPrice: 1.001
     lowerPrice: 0.999
@@ -70,7 +68,7 @@ sync:
   - binance
   symbols:
   - binance:USDCUSDT
-  since: 2023-04-03
+  since: 2020-01-01
   userDataStream:
     filledOrders: true
     trades: true
