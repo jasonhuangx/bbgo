@@ -1,0 +1,128 @@
+---
+notifications:
+  slack:
+    defaultChannel: "dev-bbgo"
+    errorChannel: "bbgo-error"
+  switches:
+    trade: false
+    orderUpdate: false
+    submitOrder: false
+
+sessions:
+  binance:
+    exchange: binance
+    envVarPrefix: binance
+
+sync:
+  # userDataStream is used to sync the trading data in real-time
+  # it uses the websocket connection to insert the trades
+  userDataStream:
+    trades: false
+    filledOrders: false
+
+  # since is the start date of your trading data
+  since: 2019-01-01
+
+  # sessions is the list of session names you want to sync
+  # by default, BBGO sync all your available sessions.
+  sessions:
+  - binance
+
+  # symbols is the list of symbols you want to sync
+  # by default, BBGO try to guess your symbols by your existing account balances.
+  symbols:
+  - BTCUSDT
+
+# example command:
+#   go run ./cmd/bbgo backtest --config config/grid2.yaml --base-asset-baseline
+backtest:
+  startTime: "2021-06-01"
+  endTime: "2021-06-30"
+  symbols:
+  - BTCUSDT
+  sessions: [binance]
+  feeMode: token
+  accounts:
+    binance:
+      makerFeeRate: 0.075%
+      takerFeeRate: 0.075%
+      balances:
+        BTC: 1.0
+        USDT: 21_000.0
+
+exchangeStrategies:
+
+- on: binance
+  grid2:
+    symbol: BTCUSDT
+
+    ## autoRange can be used to detect a price range from a specific time frame
+    ## the pivot low / pivot high of the given range will be used for lowerPrice and upperPrice.
+    ## when autoRange is set, it will override the upperPrice/lowerPrice settings.
+    ##
+    ## the valid format is [1-9][hdw]
+    ## example: "14d" means it will find the highest/lowest price that is higher/lower than left 14d and right 14d.
+    # autoRange: 14d
+
+    lowerPrice: 28_000.0
+    upperPrice: 50_000.0
+
+    ## gridNumber is the total orders between the upper price and the lower price
+    ## gridSpread = (upperPrice - lowerPrice) / gridNumber
+    ## Make sure your gridNumber satisfy this: MIN(gridSpread/lowerPrice, gridSpread/upperPrice) > (makerFeeRate * 2)
+    gridNumber: 150
+
+    ## compound is used for buying more inventory when the profit is made by the filled SELL order.
+    ## when compound is disabled, fixed quantity is used for each grid order.
+    ## default: false
+    compound: true
+
+    ## earnBase is used to profit base quantity instead of quote quantity.
+    ## meaning that earn BTC instead of USDT when trading in the BTCUSDT pair.
+    # earnBase: true
+
+    ## triggerPrice (optional) is used for opening your grid only when the last price touches your trigger price.
+    ## this is useful when you don't want to create a grid from a higher price.
+    ## for example, when the last price hit 17_000.0 then open a grid with the price range 13_000 to 20_000
+    # triggerPrice: 17_000.0
+
+    ## triggerPrice (optional) is used for closing your grid only when the last price touches your stop loss price.
+    ## for example, when the price drops to 17_000.0 then close the grid and sell all base inventory.
+    # stopLossPrice: 10_000.0
+
+    ## profitSpread is the profit spread of the arbitrage order (sell order)
+    ## greater the profitSpread, greater the profit you make when the sell order is filled.
+    ## you can set this instead of the default grid profit spread.
+    ## by default, profitSpread = (upperPrice - lowerPrice) / gridNumber
+    ## that is, greater the gridNumber, lesser the profit of each grid.
+    # profitSpread: 1000.0
+
+    ## There are 3 kinds of setup
+    ## NOTICE: you can only choose one, uncomment the config to enable it
+    ##
+    ## 1) fixed amount: amount is the quote unit (e.g. 10 USDT in BTCUSDT)
+    # amount: 10.0
+
+    ## 2) fixed quantity: it will use your balance to place orders with the fixed quantity. e.g. 0.001 BTC
+    # quantity: 0.001
+
+    ## 3) quoteInvestment and baseInvestment: when using quoteInvestment, the strategy will automatically calculate your best quantity for the whole grid.
+    ##    quoteInvestment is required, and baseInvestment is optional (could be zero)
+    ##    if you have existing BTC position and want to reuse it you can set the baseInvestment.
+    quoteInvestment: 20_000
+
+    ## baseInvestment (optional) can be useful when you have existing inventory, maybe bought at much lower price
+    baseInvestment: 1.0
+
+    ## closeWhenCancelOrder (optional)
+    ## default to false
+    closeWhenCancelOrder: true
+
+    ## resetPositionWhenStart (optional)
+    ## default to false
+    resetPositionWhenStart: false
+
+    ## clearOpenOrdersWhenStart (optional)
+    ## default to false
+    clearOpenOrdersWhenStart: false
+    keepOrdersWhenShutdown: false
