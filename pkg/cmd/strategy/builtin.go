@@ -23,7 +23,7 @@ import (
 	_ "github.com/c9s/bbgo/pkg/strategy/fmaker"
 	_ "github.com/c9s/bbgo/pkg/strategy/grid"
 	_ "github.com/c9s/bbgo/pkg/strategy/grid2"
-	  "github.com/c9s/bbgo/pkg/strategy/grid3"  //git@github.com:jasonhuangx/bbgo.git
+	//  "github.com/c9s/bbgo/pkg/strategy/grid3"  //git@github.com:jasonhuangx/bbgo.git
 	_ "github.com/c9s/bbgo/pkg/strategy/harmonic"
 	_ "github.com/c9s/bbgo/pkg/strategy/irr"
 	_ "github.com/c9s/bbgo/pkg/strategy/kline"

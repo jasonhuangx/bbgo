@@ -541,7 +541,7 @@ func (s *Strategy) InstanceID() string {
 
 func (s *Strategy) Run(ctx context.Context, orderExecutor bbgo.OrderExecutor, session *bbgo.ExchangeSession) error {
 
-	fmt.Sprintf("---------grid3 ------------")
+	fmt.Println("---------grid3 ------------")
 	return nil
 	// err := s.RunSingleTask(ctx,orderExecutor,session)
 	// return err
